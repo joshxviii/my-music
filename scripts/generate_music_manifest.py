@@ -14,7 +14,6 @@ TAG_NAMES = {
     "artist": ("artist", "TPE1", "IART"),
     "album": ("album", "TALB", "IPRD"),
     "genre": ("genre", "TCON", "IGNR"),
-    "date": ("date", "year", "TDRC", "TDOR", "TDRL", "ICRD"),
 }
 
 
@@ -47,16 +46,6 @@ def title_from_path(path):
     return re.sub(r"\s+", " ", title).strip().capitalize()
 
 
-def date_sort_key(date, path):
-    if date:
-        match = re.match(r"^(\d{4})(?:[-/.](\d{1,2}))?(?:[-/.](\d{1,2}))?", date)
-        if match:
-            year, month, day = match.groups()
-            return (0, year, (month or "01").zfill(2), (day or "01").zfill(2), path)
-        return (1, date.casefold(), "", "", path)
-    return (2, "", "", "", path)
-
-
 def build_track(path):
     relative_path = path.relative_to(ROOT).as_posix()
     audio = File(path)
@@ -70,7 +59,7 @@ def build_track(path):
         "title": tag_text(tags, TAG_NAMES["title"]) or title_from_path(relative_path),
     }
 
-    for field in ("artist", "album", "genre", "date"):
+    for field in ("artist", "album", "genre"):
         value = tag_text(tags, TAG_NAMES[field])
         if value:
             track[field] = value
@@ -95,7 +84,7 @@ def main():
         key=lambda path: path.relative_to(ROOT).as_posix().casefold(),
     )
     tracks = [build_track(path) for path in paths]
-    tracks.sort(key=lambda track: date_sort_key(track.get("date"), track["path"]))
+    tracks.sort(key=lambda track: track["title"].casefold())
 
     manifest = {"tracks": tracks}
     OUTPUT.write_text(
