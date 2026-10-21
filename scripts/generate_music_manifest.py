@@ -64,7 +64,7 @@ def build_track(path):
     track = {
         "path": relative_path,
         "src": (
-            "https://raw.githubusercontent.com/joshxviii/my-music/main/"
+            "https://raw.githubusercontent.com/joshxviii/my-music/main/tracks/"
             + "/".join(quote(part, safe="") for part in relative_path.split("/"))
         ),
         "title": tag_text(tags, TAG_NAMES["title"]) or title_from_path(relative_path),
