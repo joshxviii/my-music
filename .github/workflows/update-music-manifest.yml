@@ -3,12 +3,12 @@ name: Update music manifest
 on:
   push:
     paths:
-      - '**/*.mp3'
-      - '**/*.wav'
-      - '**/*.ogg'
-      - '**/*.m4a'
-      - '**/*.flac'
-      - '**/*.aac'
+      - 'tracks/**/*.mp3'
+      - 'tracks/**/*.wav'
+      - 'tracks/**/*.ogg'
+      - 'tracks/**/*.m4a'
+      - 'tracks/**/*.flac'
+      - 'tracks/**/*.aac'
       - 'scripts/generate_music_manifest.py'
       - '.github/workflows/update-music-manifest.yml'
   workflow_dispatch:
